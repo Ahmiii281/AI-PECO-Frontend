@@ -1,23 +1,13 @@
 import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 import compression from "vite-plugin-compression";
 
 export default defineConfig({
   plugins: [
-    tailwindcss(),
     react(),
-
-    // optional optimizations (safe)
-    compression({
-      algorithm: "brotliCompress",
-      ext: ".br"
-    }),
-    compression({
-      algorithm: "gzip",
-      ext: ".gz"
-    })
+    compression({ algorithm: "brotliCompress", ext: ".br" }),
+    compression({ algorithm: "gzip", ext: ".gz" })
   ],
 
   resolve: {
@@ -27,7 +17,6 @@ export default defineConfig({
   },
 
   build: {
-    reportCompressedSize: true,
     chunkSizeWarningLimit: 800,
     rollupOptions: {
       output: {
@@ -37,21 +26,9 @@ export default defineConfig({
               id.includes("react") ||
               id.includes("react-dom") ||
               id.includes("react-router-dom")
-            ) {
-              return "vendor-react";
-            }
+            ) return "vendor-react";
 
-            if (id.includes("recharts")) {
-              return "vendor-charts";
-            }
-
-            if (
-              id.includes("axios") ||
-              id.includes("dompurify") ||
-              id.includes("marked")
-            ) {
-              return "vendor-utils";
-            }
+            if (id.includes("recharts")) return "vendor-charts";
 
             return "vendor";
           }
